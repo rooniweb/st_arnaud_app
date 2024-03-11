@@ -10,16 +10,20 @@ def get_Strats_data(file):
 # Page principale de l'application
 def main():
     st.set_page_config(
-        page_title="Application Arnaud (Horst de Dias)",
+        page_title="Application Horst de Dias",
         page_icon=":chart_with_upwards_trend:",  # Remplacez ceci par l'icône de votre choix
         layout="wide",  # Utilisez "centered" pour revenir à la largeur par défaut
         initial_sidebar_state="auto",
     )
-    st.title("APP ARNAUD NATRANG (Horst de Dias)")
+    st.title("APP Horst de Dias")
     st.write("Bienvenue !")
 
+    # Chargement automatique du fichier (utilisation d'un fichier par défaut)
+    default_file_path = 'docs/Arnaud_BDD.csv'  # Remplacez ceci par le chemin de votre fichier par défaut
+    uploaded_file = st.file_uploader("Chargez la base de données", type=["csv"], key="default_file", accept_multiple_files=False) or default_file_path
+
     # Widget de chargement de fichier
-    uploaded_file = st.file_uploader("Chargez la base de données", type=["csv"])
+    # uploaded_file = st.file_uploader("Chargez la base de données", type=["csv"])
 
     # Vérifier si un fichier a été chargé
     if uploaded_file is not None:
@@ -27,25 +31,25 @@ def main():
         df = get_Strats_data(uploaded_file)
 
         # Code pour ajouter une image arrondie en haut de la barre latérale
-        st.markdown(
-            """
-            <style>
-                div:nth-child(1) > div.withScreencast > div > div > div > 
-                section.st-emotion-cache-vk3wp9.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > 
-                div.st-emotion-cache-16txtl3.eczjsme4 > div > div > div > div > div:nth-child(1) > div > div > div > 
-                img {
-                    border-radius: 50%;
-                }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
+        # st.markdown(
+        #     """
+        #     <style>
+        #         div:nth-child(1) > div.withScreencast > div > div > div > 
+        #         section.st-emotion-cache-vk3wp9.eczjsme11 > div.st-emotion-cache-6qob1r.eczjsme3 > 
+        #         div.st-emotion-cache-16txtl3.eczjsme4 > div > div > div > div > div:nth-child(1) > div > div > div > 
+        #         img {
+        #             border-radius: 50%;
+        #         }
+        #     </style>
+        #     """,
+        #     unsafe_allow_html=True
+        # )
 
         # Chemin local vers l'image dans le dossier "img"
-        rounded_image_path = "img/image1.png"  # Remplacez par le nom de votre image et son extension
+        # rounded_image_path = "img/image1.png"  # Remplacez par le nom de votre image et son extension
 
         # Afficher l'image arrondie dans la barre latérale
-        st.sidebar.image(rounded_image_path, caption="", use_column_width=True, output_format="auto",)
+        # st.sidebar.image(rounded_image_path, caption="", use_column_width=True, output_format="auto",)
         # Afficher les filtres dans la barre latérale
         st.sidebar.title("Recherche")
 
@@ -110,10 +114,13 @@ def main():
                     col21, col22, col23, col24, col25 = st.columns(5)
 
                     with col11:
-                        st.metric("Z", f"{str(df_renamed['Z_Quaternaire'].dropna().unique()[0]).replace('.',',')} m" if not df_renamed["Z_Quaternaire"].dropna().empty else "<small>Aucune valeur</small>")
-
-                    with col21:
-                        st.metric("Épaisseur", f"{str(df_renamed['Epaisseur_Quaternaire'].dropna().unique()[0]).replace('.',',')} m" if not df_renamed["Epaisseur_Quaternaire"].dropna().empty else "<small>Aucune valeur</small>")
+                        st.write(f"<small>Z =  {str(df_renamed['Z_Quaternaire'].dropna().unique()[0]).replace('.',',')} m</small>" if not df_renamed["Z_Quaternaire"].dropna().empty else "<small>Aucune valeur</small>", unsafe_allow_html=True)
+                        # Ajouter une ligne
+                        # st.markdown("---")
+                    with col12:
+                        st.write(f"<small>Épaisseur = {str(df_renamed['Epaisseur_Quaternaire'].dropna().unique()[0]).replace('.',',')} m</small>" if not df_renamed["Epaisseur_Quaternaire"].dropna().empty else "<small>Aucune valeur</small>", unsafe_allow_html=True)
+                        # Ajouter une ligne
+                        # st.markdown("---")
 
                 # Couche Éocène
                 with st.container(border=True):
@@ -123,7 +130,7 @@ def main():
 
                     with col11:
                         display_metric_value(my_metric="Z",my_value=df_renamed['Z_Éocène'].dropna())
-                    with col21:
+                    with col12:
                         display_metric_value(my_metric="Épaisseur",my_value=df_renamed['Epaisseur_Éocène'].dropna())
 
                 # Couche Paléocène
@@ -191,23 +198,14 @@ def display_scientific_value(my_metric, my_value, square=""):
         value_part = str(value_part).replace('.',',')
         return st.markdown(
             body=f"""
-            <div data-testid="column" class="st-emotion-cache-j5r0tf e1f1d6gn3" style="width:100%">
+            <div data-testid="column" class="st-emotion-cache-j5r0tf e1f1d6gn3">
                 <div data-testid="stVerticalBlockBorderWrapper" data-test-scroll-behavior="normal" class="st-emotion-cache-0 e1f1d6gn0">
                     <div class="st-emotion-cache-1wmy9hl e1f1d6gn1">
-                        <div width="153.40625" data-testid="stVerticalBlock" class="st-emotion-cache-1n1rb81 e1f1d6gn2">
-                            <div data-stale="false" width="153.40625" class="element-container st-emotion-cache-1tewv2s e1f1d6gn4" data-testid="element-container">
-                                <div data-testid="stMetric">
-                                    <label data-testid="stMetricLabel" visibility="0" class="st-emotion-cache-17c4ue e1i5pmia2">
-                                        <div class="st-emotion-cache-1wivap2 e1i5pmia3">
-                                            <div data-testid="stMarkdownContainer" class="st-emotion-cache-l9bjmx e1nzilvr5">
-                                                <p>{my_metric}</p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                    <div data-testid="stMetricValue" class="st-emotion-cache-1xarl3l e1i5pmia1">
-                                        <div class="st-emotion-cache-1wivap2 e1i5pmia3" style="overflow:visible;">
-                                            {value_part}.10<sup>{int(exponent_part)}</sup> m<sup>{square}</sup>/s
-                                        </div>
+                        <div width="111.59375" data-testid="stVerticalBlock" class="st-emotion-cache-1m00g76 e1f1d6gn2">
+                            <div data-stale="false" width="111.59375" class="element-container st-emotion-cache-gp88j e1f1d6gn4" data-testid="element-container">
+                                <div class="stMarkdown" data-testid="stMarkdown" style="width: 150px;">
+                                    <div data-testid="stMarkdownContainer" class="st-emotion-cache-eqffof e1nzilvr5">
+                                        <p><small>{my_metric} =  {value_part}.10<sup>{int(exponent_part)}</sup> m<sup>{square}</sup>/s</small></p>
                                     </div>
                                 </div>
                             </div>
@@ -215,7 +213,6 @@ def display_scientific_value(my_metric, my_value, square=""):
                     </div>
                 </div>
             </div>
-            <hr>
             """,
             unsafe_allow_html=True)
     else:
@@ -229,63 +226,43 @@ def display_metric_value(my_metric, my_value):
         value = str(value).replace('.',',')
         return st.markdown(
             body=f"""
-            <div data-testid="column" class="st-emotion-cache-j5r0tf e1f1d6gn3" style="width:100%">
+            <div data-testid="column" class="st-emotion-cache-j5r0tf e1f1d6gn3">
                 <div data-testid="stVerticalBlockBorderWrapper" data-test-scroll-behavior="normal" class="st-emotion-cache-0 e1f1d6gn0">
                     <div class="st-emotion-cache-1wmy9hl e1f1d6gn1">
-                        <div width="153.40625" data-testid="stVerticalBlock" class="st-emotion-cache-1n1rb81 e1f1d6gn2">
-                            <div data-stale="false" width="153.40625" class="element-container st-emotion-cache-1tewv2s e1f1d6gn4" data-testid="element-container">
-                                <div data-testid="stMetric">
-                                    <label data-testid="stMetricLabel" visibility="0" class="st-emotion-cache-17c4ue e1i5pmia2">
-                                        <div class="st-emotion-cache-1wivap2 e1i5pmia3">
-                                            <div data-testid="stMarkdownContainer" class="st-emotion-cache-l9bjmx e1nzilvr5">
-                                                <p>{my_metric}</p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                    <div data-testid="stMetricValue" class="st-emotion-cache-1xarl3l e1i5pmia1">
-                                        <div class="st-emotion-cache-1wivap2 e1i5pmia3" style="overflow:visible;">
-                                            {value} m
-                                        </div>
+                        <div width="111.59375" data-testid="stVerticalBlock" class="st-emotion-cache-1m00g76 e1f1d6gn2">
+                            <div data-stale="false" width="111.59375" class="element-container st-emotion-cache-gp88j e1f1d6gn4" data-testid="element-container">
+                                <div class="stMarkdown" data-testid="stMarkdown" style="width: 150px;">
+                                    <div data-testid="stMarkdownContainer" class="st-emotion-cache-eqffof e1nzilvr5">
+                                        <p><small>{my_metric} = {value} m</small></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <hr>
+            </div>            
             """,
             unsafe_allow_html=True)
     
     return st.markdown(
-            body=f"""
-            <div data-testid="column" class="st-emotion-cache-j5r0tf e1f1d6gn3" style="width:100%">
-                <div data-testid="stVerticalBlockBorderWrapper" data-test-scroll-behavior="normal" class="st-emotion-cache-0 e1f1d6gn0">
-                    <div class="st-emotion-cache-1wmy9hl e1f1d6gn1">
-                        <div width="153.40625" data-testid="stVerticalBlock" class="st-emotion-cache-1n1rb81 e1f1d6gn2">
-                            <div data-stale="false" width="153.40625" class="element-container st-emotion-cache-1tewv2s e1f1d6gn4" data-testid="element-container">
-                                <div data-testid="stMetric">
-                                    <label data-testid="stMetricLabel" visibility="0" class="st-emotion-cache-17c4ue e1i5pmia2">
-                                        <div class="st-emotion-cache-1wivap2 e1i5pmia3">
-                                            <div data-testid="stMarkdownContainer" class="st-emotion-cache-l9bjmx e1nzilvr5">
-                                                <p>{my_metric}</p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                    <div data-testid="stMetricValue" class="st-emotion-cache-1xarl3l e1i5pmia1">
-                                        <div class="st-emotion-cache-1wivap2 e1i5pmia3" style="overflow:visible;">
-                                            <small>Aucune valeur</small>
-                                        </div>
-                                    </div>
+        body=f"""
+        <div data-testid="column" class="st-emotion-cache-j5r0tf e1f1d6gn3">
+            <div data-testid="stVerticalBlockBorderWrapper" data-test-scroll-behavior="normal" class="st-emotion-cache-0 e1f1d6gn0">
+                <div class="st-emotion-cache-1wmy9hl e1f1d6gn1">
+                    <div width="111.59375" data-testid="stVerticalBlock" class="st-emotion-cache-1m00g76 e1f1d6gn2">
+                        <div data-stale="false" width="111.59375" class="element-container st-emotion-cache-gp88j e1f1d6gn4" data-testid="element-container">
+                            <div class="stMarkdown" data-testid="stMarkdown" style="width: 150px;">
+                                <div data-testid="stMarkdownContainer" class="st-emotion-cache-eqffof e1nzilvr5">
+                                    <p><small>{my_metric} = Aucune valeur</small></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <hr>
-            """,
-            unsafe_allow_html=True)
+        </div>
+        """,
+        unsafe_allow_html=True)
     
 
 
